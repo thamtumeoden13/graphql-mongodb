@@ -1,0 +1,20 @@
+{
+  "name": "graphql-mongodb",
+  "version": "1.0.0",
+  "description": "Building a GraphQL API with Node and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": "https://github.com/thamtumeoden13/graphql-mongodb.git",
+  "author": "detective.blackcat13",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
