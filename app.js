@@ -1,11 +1,12 @@
 const express = require('express')
 const expressGraphQL = require('express-graphql')
 const mongoose = require('mongoose')
+const cors = require("cors");
 
 const schema = require('./src/schema')
 
 const app = express();
-app.use(Cors());
+app.use(cors());
 
 const mongoDB = "mongodb://localhost/mongodb"
 mongoose.connect(mongoDB, {
