@@ -2,6 +2,7 @@ const graphql = require('graphql')
 
 const Poster = require('./models/poster')
 const Category = require('./models/category')
+const { PosterType, CategoryType } = require('./typeDefs')
 
 const {
     GraphQLID,
@@ -13,41 +14,44 @@ const {
     GraphQLNonNull
 } = graphql
 
-const PosterType = new GraphQLObjectType({
-    name: "Poster",
-    fields: () => ({
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        title: { type: GraphQLString },
-        content: { type: GraphQLString },
+
+const Query = new GraphQLObjectType({
+    name: 'Query',
+    fields: {
+        poster: {
+            type: PosterType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                return Poster.findById(arg.id)
+            }
+        },
+        posters: {
+            type: GraphQLList(PosterType),
+            resolve(parent, args) {
+                return Poster.find({})
+            }
+        },
         category: {
             type: CategoryType,
+            args: {
+                id: { type: GraphQLID }
+            },
             resolve(parent, args) {
-                return Poster.findById(parent.categoryId)
+                return Category.findById(arg.id)
             }
-        }
-    })
+        },
+        categories: {
+            type: GraphQLList(CategoryType),
+            resolve(parent, args) {
+                return Category.find({})
+            }
+        },
+    }
 })
 
-const CategoryType = new GraphQLObjectType({
-    name: "Category",
-    fields: () => ({
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        title: { type: GraphQLString },
-        content: { type: GraphQLString },
-        posters: {
-            type: new GraphQLList(PosterType),
-            resolve(parent, args) {
-                return Poster.find({
-                    categoryId: parent.id
-                })
-            }
-        }
-    })
-})
 
-module.exports = {
-    PosterType,
-    CategoryType
-}
+module.exports = new GraphQLSchema({
+    query: Query
+});

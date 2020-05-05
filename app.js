@@ -2,14 +2,17 @@ const express = require('express')
 const expressGraphQL = require('express-graphql')
 const mongoose = require('mongoose')
 
-const schema = require('./src/resolvers')
+const schema = require('./src/schema')
 
 const app = express();
 
-mongoose.connect("mongodb://localhost/mongodb", {
+const mongoDB = "mongodb://localhost/mongodb"
+mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
+
+mongoose.Promise = global.Promise;
 
 app.use("/graphql", expressGraphQL({
     schema: schema,
@@ -19,3 +22,7 @@ app.use("/graphql", expressGraphQL({
 app.listen(4000, () => {
     console.log('Listening at 4000...')
 })
+
+const db = mongoose.connection;
+//Ràng buộc kết nối với sự kiện lỗi (để lấy ra thông báo khi có lỗi)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
