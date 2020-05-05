@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const schema = require('./src/schema')
 
 const app = express();
+app.use(Cors());
 
 const mongoDB = "mongodb://localhost/mongodb"
 mongoose.connect(mongoDB, {
